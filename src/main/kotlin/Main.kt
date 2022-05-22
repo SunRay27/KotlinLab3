@@ -1,16 +1,16 @@
 import serviceManager.Contact
-import serviceManager.ContactsService
+import serviceManager.UserContacts
 import serviceManager.Person
 
 
 fun main() {
-    val service = ContactsService()
+    val service = UserContacts()
 
     val testPerson = Person("IVAN", "IVANOV")
     val testPerson2 = Person("IVAN", "IVANOVV")
 
 
-    printSevice(service)
+    printService(service)
 
     service.addEmail(testPerson, "example@gmail.com")
     service.addPhone(testPerson, "8801", Contact.Phone.PhoneType.PERSONAL)
@@ -22,7 +22,7 @@ fun main() {
     service.addContact(testPerson2, Contact.Address(122512u, "City1", "Street2", 15u))
     service.addContact(testPerson2, Contact.SocialLink("YOUTUBE", "youtube.com/..."))
 
-    printSevice(service)
+    printService(service)
     println()
     service.getPersonPhones(testPerson).forEach { println(it) }
     println()
@@ -36,11 +36,11 @@ fun main() {
     println()
     service.getAllContacts()[testPerson]?.let { service.removeContact(testPerson, it[1]) }
     println()
-    printSevice(service)
+    printService(service)
 }
 
 
-fun printSevice(service: ContactsService) {
+fun printService(service: UserContacts) {
     service.getAllContacts().forEach {
         println(it.key)
         it.value.forEach { contact ->

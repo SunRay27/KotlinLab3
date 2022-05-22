@@ -1,72 +1,30 @@
 package serviceManager
 
-class ContactsService : IContactsService {
-    private val contactsMap: MutableMap<Person, MutableList<Contact>> = mutableMapOf()
+interface ContactsService {
 
-    override fun addContact(person: Person, contact: Contact) {
-        contactsMap.putIfAbsent(person, mutableListOf())
-        contactsMap[person]!!.add(contact)
-    }
+    fun addContact(person: Person, contact: Contact)
+    fun removeContact(person: Person, contact: Contact)
+    fun removePerson(person: Person)
 
-    override fun removeContact(person: Person, contact: Contact) {
-        contactsMap[person]!!.remove(contact)
-    }
+    fun addPhone(person: Person, phone: String, phoneType: Contact.Phone.PhoneType)
+    fun addEmail(person: Person, email: String)
+    fun addLink(person: Person, linkName: String, url: String)
+    fun addAddress(
+        person: Person,
+        index: UInt,
+        cityName: String,
+        streetName: String,
+        buildingNumber: UInt
+    )
 
-    override fun removePerson(person: Person) {
-        contactsMap.remove(person)
-    }
+    fun getPersonContacts(person: Person): List<Contact>
+    fun getPersonPhones(person: Person): List<Contact.Phone>
+    fun getPersonAddresses(person: Person): List<Contact.Address>
+    fun getPersonEmails(person: Person): List<Contact.Email>
+    fun getPersonLinks(person: Person): List<Contact.SocialLink>
 
-    override fun addPhone(person: Person, phone: String, phoneType: Contact.Phone.PhoneType) {
-        contactsMap.putIfAbsent(person, mutableListOf())
-        contactsMap[person]!!.add(Contact.Phone(phone, phoneType))
-    }
+    fun getAllPersons(): List<Person>
+    fun getAllContacts(): Map<Person, List<Contact>>
 
-    override fun addEmail(person: Person, email: String) {
-        contactsMap.putIfAbsent(person, mutableListOf())
-        contactsMap[person]!!.add(Contact.Email(email))
-    }
-
-    override fun addLink(person: Person, linkName: String, url: String) {
-        contactsMap.putIfAbsent(person, mutableListOf())
-        contactsMap[person]!!.add(Contact.SocialLink(linkName, url))
-    }
-
-    override fun addAddress(person: Person, index: UInt, cityName: String, streetName: String, buildingNumber: UInt) {
-        contactsMap.putIfAbsent(person, mutableListOf())
-        contactsMap[person]!!.add(Contact.Address(index, cityName, streetName, buildingNumber))
-    }
-
-    override fun getPersonContacts(person: Person): List<Contact> {
-
-        return contactsMap[person]!!.toList()
-    }
-
-    override fun getPersonPhones(person: Person): List<Contact.Phone> {
-        return contactsMap[person]!!.filterIsInstance<Contact.Phone>()
-    }
-
-    override fun getPersonAddresses(person: Person): List<Contact.Address> {
-        return contactsMap[person]!!.filterIsInstance<Contact.Address>()
-    }
-
-    override fun getPersonEmails(person: Person): List<Contact.Email> {
-        return contactsMap[person]!!.filterIsInstance<Contact.Email>()
-    }
-
-    override fun getPersonLinks(person: Person): List<Contact.SocialLink> {
-        return contactsMap[person]!!.filterIsInstance<Contact.SocialLink>()
-    }
-
-    override fun getAllPersons(): List<Person> {
-        return contactsMap.keys.toList()
-    }
-
-    override fun getAllContacts(): Map<Person, List<Contact>> {
-        return contactsMap
-    }
-
-    override fun findPerson(match: String): Person? {
-        return contactsMap.keys.firstOrNull { it.firstName.contains(match) || it.secondName.contains(match) }
-    }
-
+    fun findPerson(match: String): Person?
 }
